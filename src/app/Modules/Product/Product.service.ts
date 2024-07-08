@@ -14,11 +14,11 @@ const getAllProductService = async (query: Record<string, unknown>) => {
   const maxPrice = max ? parseInt(max as string) : 0;
   const filter: Record<string, any> = {};
 
-  if (min && max) {
+  if (minPrice && maxPrice) {
     filter.price = { $gte: minPrice, $lte: maxPrice };
-  } else if (min) {
+  } else if (minPrice) {
     filter.price = { $gte: minPrice };
-  } else if (max) {
+  } else if (maxPrice) {
     filter.price = { $lte: maxPrice };
   }
 
@@ -28,7 +28,8 @@ const getAllProductService = async (query: Record<string, unknown>) => {
     .sort()
     .search(["title"]);
   const result = await queryBuild.modelQuery;
-  return result;
+  const totalDoc = await Product.countDocuments(filter);
+  return { result, totalDoc };
 };
 
 const productService = {

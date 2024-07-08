@@ -15,11 +15,12 @@ export const createProduct = catchAsyncError(async (req, res) => {
   });
 });
 export const getAllProduct = catchAsyncError(async (req, res) => {
-  const result = await getAllProductService(req.query);
+  const { result, totalDoc } = await getAllProductService(req.query);
 
-  sendResponse(res, {
+  res.json({
+    success: true,
     message: "successfully get all product",
     data: result,
-    success: true,
+    totalDoc,
   });
 });
