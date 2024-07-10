@@ -12,12 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.validSchema = void 0;
 const validSchema = (schema) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log(req.body);
         const { success, error } = yield schema.safeParseAsync(req.body);
         if (success) {
             next();
         }
         else {
-            console.log(error);
             next(error);
         }
     });

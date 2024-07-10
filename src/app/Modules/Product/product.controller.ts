@@ -1,14 +1,16 @@
 import { catchAsyncError } from "../../../utils/catchAsyncError";
 import sendResponse from "../../../utils/sendResponse";
+import { IProductOrder } from "./product.interface";
 import Product from "./product.model";
-import productService, { deleteProductByIdService } from "./Product.service";
-import { IProductOrder } from "./Prouct.interface";
+import productService from "./product.service";
 
 const {
   createProductService,
   getAllProductService,
   getSingleProductService,
   updateProductService,
+  deleteProductByIdService,
+  getFeaturedProductService,
 } = productService;
 
 export const createProduct = catchAsyncError(async (req, res) => {
@@ -29,6 +31,14 @@ export const getAllProduct = catchAsyncError(async (req, res) => {
     message: "successfully get all product",
     data: result,
     totalDoc,
+  });
+});
+export const getFeaturedProduct = catchAsyncError(async (req, res) => {
+  const result = await getFeaturedProductService(req.query);
+  sendResponse(res, {
+    success: true,
+    data: result,
+    message: "Successfully get featured products",
   });
 });
 export const getSingleProduct = catchAsyncError(async (req, res) => {

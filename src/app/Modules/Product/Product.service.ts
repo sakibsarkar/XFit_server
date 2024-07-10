@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import QueryBuilder from "../../builder/QueryBuilder";
+import { IProduct } from "./product.interface";
 import Product from "./product.model";
-import { IProduct } from "./Prouct.interface";
 
 const createProductService = async (payload: IProduct) => {
   const result = await Product.create(payload);
@@ -45,12 +45,17 @@ const getAllProductService = async (query: Record<string, unknown>) => {
   return { result, totalDoc };
 };
 
-export const getSingleProductService = async (id: string) => {
+const getSingleProductService = async (id: string) => {
   const result = await Product.findById(id);
   return result;
 };
+const getFeaturedProductService = async (query: Record<string, unknown>) => {
+  const limit = Number(query.limit || 4);
+  const result = await Product.find().sort({ createdAt: -1 }).limit(limit);
+  return result;
+};
 
-export const updateProductService = async (
+const updateProductService = async (
   payload: Partial<IProduct>,
   productId: string
 ) => {
@@ -59,7 +64,7 @@ export const updateProductService = async (
   });
   return result;
 };
-export const deleteProductByIdService = async (productId: string) => {
+const deleteProductByIdService = async (productId: string) => {
   const result = await Product.findByIdAndDelete(productId);
   return result;
 };
@@ -69,6 +74,7 @@ const productService = {
   getAllProductService,
   getSingleProductService,
   updateProductService,
-  deleteProductByIdService
+  deleteProductByIdService,
+  getFeaturedProductService
 };
 export default productService;

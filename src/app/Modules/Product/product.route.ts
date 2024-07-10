@@ -5,6 +5,7 @@ import {
   createProduct,
   deleteProductByIdController,
   getAllProduct,
+  getFeaturedProduct,
   getSingleProduct,
   updateProductByIdController,
 } from "./product.controller";
@@ -15,9 +16,14 @@ import {
 } from "./product.validation";
 const router = Router();
 router.get("/", getAllProduct);
+router.get("/featured", getFeaturedProduct);
 router.get("/get/:id", getSingleProduct);
 router.post("/create", validSchema(productValidationSchema), createProduct);
-router.put("/update/:id", validSchema(updateProductValidationSchema), updateProductByIdController);
+router.put(
+  "/update/:id",
+  validSchema(updateProductValidationSchema),
+  updateProductByIdController
+);
 router.delete("/delete/:id", deleteProductByIdController);
 router.post(
   "/order-many",
