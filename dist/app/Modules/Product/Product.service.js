@@ -20,7 +20,7 @@ const createProductService = (payload) => __awaiter(void 0, void 0, void 0, func
     return result;
 });
 const getAllProductService = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { min, max, category, searchTerm } = query;
+    const { min, max, category } = query;
     const minPrice = min ? parseInt(min) : 0;
     const maxPrice = max ? parseInt(max) : 0;
     const filter = {};

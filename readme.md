@@ -1,8 +1,18 @@
-# Mongoose Car wash
+# Xfit Fitness server
 
 ## Introduction
 
-Welcome to the Project Name repository! This README file will guide you through the steps required to set up and run the project on your local computer.
+Welcome to the Project repository!.
+fitness application Server allows users to create, edit, and delete products. Users can filter products by category, minimum/maximum price, and search by product title.
+
+This README file will guide you through the steps required to set up and run the project on your local computer.
+
+## Technology Stack
+
+- Node js
+- Express js
+- Typescript
+- MongoDB
 
 ## Getting Started
 
@@ -14,14 +24,14 @@ Make sure you have the following software installed on your machine:
 
 - Git
 - Node.js (v20.9.0 recommended)
-- Yarn
+- Yarn or any package installer
 
 ### Cloning the Repository
 
 First, clone the repository using the following command:
 
 ```
-git clone https://github.com/sakibsarkar/mogoose_carwash.git
+https://github.com/sakibsarkar/XFit_server.git
 
 ```
 
@@ -39,11 +49,11 @@ yarn install
 Create a .env file in the root directory of the project and add your MongoDB credentials:
 
 ```
-MONGO_NAME=your mongodb username
-MONGO_PASS=your mongodb password
-MONGO_DB=your database name
+MONGO_NAME= Mongodb user name
+MONGO_PASS= mongodb password
+MONGO_DB= Mongodb collection name
+SALT_ROUND=10
 NODE_ENV="development"
-JWT_ACCESS_SECRET=secret key for jwt token
 ```
 
 ### Running the Project
@@ -59,5 +69,4 @@ yarn dev
 
 ```
 http://localhost:5000
-
 ```
