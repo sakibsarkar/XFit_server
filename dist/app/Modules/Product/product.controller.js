@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.confirmManyProductOrderController = exports.deleteProductByIdController = exports.updateProductByIdController = exports.getSingleProduct = exports.getAllProduct = exports.createProduct = void 0;
+exports.confirmManyProductOrderController = exports.deleteProductByIdController = exports.updateProductByIdController = exports.getSingleProduct = exports.getFeaturedProduct = exports.getAllProduct = exports.createProduct = void 0;
 const catchAsyncError_1 = require("../../../utils/catchAsyncError");
 const sendResponse_1 = __importDefault(require("../../../utils/sendResponse"));
 const product_model_1 = __importDefault(require("./product.model"));
 const product_service_1 = __importDefault(require("./product.service"));
-const { createProductService, getAllProductService, getSingleProductService, updateProductService, deleteProductByIdService, } = product_service_1.default;
+const { createProductService, getAllProductService, getSingleProductService, updateProductService, deleteProductByIdService, getFeaturedProductService, } = product_service_1.default;
 exports.createProduct = (0, catchAsyncError_1.catchAsyncError)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     const result = yield createProductService(body);
@@ -34,6 +34,14 @@ exports.getAllProduct = (0, catchAsyncError_1.catchAsyncError)((req, res) => __a
         message: "successfully get all product",
         data: result,
         totalDoc,
+    });
+}));
+exports.getFeaturedProduct = (0, catchAsyncError_1.catchAsyncError)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield getFeaturedProductService(req.query);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        data: result,
+        message: "Successfully get featured products",
     });
 }));
 exports.getSingleProduct = (0, catchAsyncError_1.catchAsyncError)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

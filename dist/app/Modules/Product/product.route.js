@@ -7,7 +7,7 @@ const product_controller_1 = require("./product.controller");
 const product_validation_1 = require("./product.validation");
 const router = (0, express_1.Router)();
 router.get("/", product_controller_1.getAllProduct);
-router.get("/featured", product_controller_1.getAllProduct);
+router.get("/featured", product_controller_1.getFeaturedProduct);
 router.get("/get/:id", product_controller_1.getSingleProduct);
 router.post("/create", (0, validator_1.validSchema)(product_validation_1.productValidationSchema), product_controller_1.createProduct);
 router.put("/update/:id", (0, validator_1.validSchema)(product_validation_1.updateProductValidationSchema), product_controller_1.updateProductByIdController);

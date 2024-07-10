@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProductByIdService = exports.updateProductService = exports.getFeaturedProducts = exports.getSingleProductService = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const QueryBuilder_1 = __importDefault(require("../../builder/QueryBuilder"));
 const product_model_1 = __importDefault(require("./product.model"));
@@ -56,30 +55,27 @@ const getSingleProductService = (id) => __awaiter(void 0, void 0, void 0, functi
     const result = yield product_model_1.default.findById(id);
     return result;
 });
-exports.getSingleProductService = getSingleProductService;
-const getFeaturedProducts = (query) => __awaiter(void 0, void 0, void 0, function* () {
+const getFeaturedProductService = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const limit = Number(query.limit || 4);
     const result = yield product_model_1.default.find().sort({ createdAt: -1 }).limit(limit);
     return result;
 });
-exports.getFeaturedProducts = getFeaturedProducts;
 const updateProductService = (payload, productId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.default.findByIdAndUpdate(productId, payload, {
         new: true,
     });
     return result;
 });
-exports.updateProductService = updateProductService;
 const deleteProductByIdService = (productId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.default.findByIdAndDelete(productId);
     return result;
 });
-exports.deleteProductByIdService = deleteProductByIdService;
 const productService = {
     createProductService,
     getAllProductService,
-    getSingleProductService: exports.getSingleProductService,
-    updateProductService: exports.updateProductService,
-    deleteProductByIdService: exports.deleteProductByIdService,
+    getSingleProductService,
+    updateProductService,
+    deleteProductByIdService,
+    getFeaturedProductService
 };
 exports.default = productService;
