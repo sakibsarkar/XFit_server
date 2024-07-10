@@ -7,3 +7,8 @@ export interface IProduct {
   category: string;
   tag?: string;
 }
+
+export interface IProductOrder {
+  quantity: number;
+  _id: string;
+}

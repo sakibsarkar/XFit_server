@@ -9,7 +9,7 @@ const createProductService = async (payload: IProduct) => {
 };
 
 const getAllProductService = async (query: Record<string, unknown>) => {
-  const { min, max, category } = query;
+  const { min, max, category, searchTerm } = query;
 
   const minPrice = min ? parseInt(min as string) : 0;
   const maxPrice = max ? parseInt(max as string) : 0;
@@ -35,13 +35,40 @@ const getAllProductService = async (query: Record<string, unknown>) => {
     .paginate()
     .sort()
     .search(["title"]);
+
   const result = await queryBuild.modelQuery;
+
+  if (searchTerm) {
+    filter.title = { $regex: searchTerm, $options: "i" };
+  }
   const totalDoc = await Product.countDocuments(filter);
   return { result, totalDoc };
+};
+
+export const getSingleProductService = async (id: string) => {
+  const result = await Product.findById(id);
+  return result;
+};
+
+export const updateProductService = async (
+  payload: Partial<IProduct>,
+  productId: string
+) => {
+  const result = await Product.findByIdAndUpdate(productId, payload, {
+    new: true,
+  });
+  return result;
+};
+export const deleteProductByIdService = async (productId: string) => {
+  const result = await Product.findByIdAndDelete(productId);
+  return result;
 };
 
 const productService = {
   createProductService,
   getAllProductService,
+  getSingleProductService,
+  updateProductService,
+  deleteProductByIdService
 };
 export default productService;

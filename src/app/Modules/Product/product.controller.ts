@@ -1,8 +1,15 @@
 import { catchAsyncError } from "../../../utils/catchAsyncError";
 import sendResponse from "../../../utils/sendResponse";
-import productService from "./Product.service";
+import Product from "./product.model";
+import productService, { deleteProductByIdService } from "./Product.service";
+import { IProductOrder } from "./Prouct.interface";
 
-const { createProductService, getAllProductService } = productService;
+const {
+  createProductService,
+  getAllProductService,
+  getSingleProductService,
+  updateProductService,
+} = productService;
 
 export const createProduct = catchAsyncError(async (req, res) => {
   const { body } = req;
@@ -24,3 +31,98 @@ export const getAllProduct = catchAsyncError(async (req, res) => {
     totalDoc,
   });
 });
+export const getSingleProduct = catchAsyncError(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await getSingleProductService(id);
+
+  if (!result) {
+    return sendResponse(res, {
+      success: false,
+      data: null,
+      message: `No product found for ${id}`,
+    });
+  }
+
+  res.json({
+    success: true,
+    message: "successfully get product",
+    data: result,
+  });
+});
+
+export const updateProductByIdController = catchAsyncError(async (req, res) => {
+  const { id } = req.params;
+  const isExist = await Product.findById(id);
+  if (!isExist) {
+    return sendResponse(res, {
+      success: false,
+      data: null,
+      message: "Product not found",
+      statusCode: 404,
+    });
+  }
+
+  const result = await updateProductService(req.body, id);
+  sendResponse(res, {
+    data: result,
+    success: true,
+    message: "Successfully product updated",
+  });
+});
+export const deleteProductByIdController = catchAsyncError(async (req, res) => {
+  const { id } = req.params;
+  const isExist = await Product.findById(id);
+  if (!isExist) {
+    return sendResponse(res, {
+      success: false,
+      data: null,
+      message: "Product not found",
+      statusCode: 404,
+    });
+  }
+
+  const result = await deleteProductByIdService(id);
+  sendResponse(res, {
+    data: result,
+    success: true,
+    message: "Successfully deleted product",
+  });
+});
+
+export const confirmManyProductOrderController = catchAsyncError(
+  async (req, res) => {
+    const cartItems = req.body.cartItems as IProductOrder[];
+    for (const item of cartItems) {
+      const product = await Product.findById(item._id);
+
+      if (product) {
+        // Check if there is enough stock
+        if (product.stock >= item.quantity) {
+          product.stock -= item.quantity;
+          await product.save();
+        } else {
+          return sendResponse(res, {
+            message: `Not enough stock for ${product.title}`,
+            success: false,
+            data: null,
+            statusCode: 400,
+          });
+        }
+      } else {
+        return sendResponse(res, {
+          message: `Product ${item._id} not found`,
+          success: false,
+          data: null,
+          statusCode: 404,
+        });
+      }
+    }
+
+    sendResponse(res, {
+      data: null,
+      message: "successfully purchased products",
+      success: true,
+    });
+  }
+);

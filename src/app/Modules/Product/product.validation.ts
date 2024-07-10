@@ -20,3 +20,12 @@ export const updateProductValidationSchema = z.object({
   category: z.string().optional(),
   tag: z.string().optional(),
 });
+
+const confirmOrderValiationSchema = z.object({
+  quantity: z.number().int().positive(),
+  _id: z.string(),
+});
+
+export const productOrderBodySchema = z.object({
+  cartItems: z.array(confirmOrderValiationSchema),
+});
