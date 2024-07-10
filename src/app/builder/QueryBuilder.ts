@@ -3,10 +3,12 @@ import { FilterQuery, Query } from "mongoose";
 class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
   public query: Record<string, unknown>;
+  totalCount: number;
 
   constructor(modelQuery: Query<T[], T>, query: Record<string, unknown>) {
     this.modelQuery = modelQuery;
     this.query = query;
+    this.totalCount = 0;
   }
 
   search(searchableFields: string[]) {
@@ -61,6 +63,14 @@ class QueryBuilder<T> {
       (this?.query?.fields as string)?.split(",")?.join(" ") || "-__v";
 
     this.modelQuery = this.modelQuery.select(fields);
+    return this;
+  }
+
+  async count() {
+    const countQuery = this.modelQuery.model.countDocuments(
+      this.modelQuery.getFilter()
+    );
+    this.totalCount = await countQuery.exec();
     return this;
   }
 }

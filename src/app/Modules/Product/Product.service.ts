@@ -9,7 +9,7 @@ const createProductService = async (payload: IProduct) => {
 };
 
 const getAllProductService = async (query: Record<string, unknown>) => {
-  const { min, max, category, searchTerm } = query;
+  const { min, max, category } = query;
 
   const minPrice = min ? parseInt(min as string) : 0;
   const maxPrice = max ? parseInt(max as string) : 0;
@@ -36,13 +36,11 @@ const getAllProductService = async (query: Record<string, unknown>) => {
     .sort()
     .search(["title"]);
 
+  const total = await queryBuild.count();
+
   const result = await queryBuild.modelQuery;
 
-  if (searchTerm) {
-    filter.title = { $regex: searchTerm, $options: "i" };
-  }
-  const totalDoc = await Product.countDocuments(filter);
-  return { result, totalDoc };
+  return { result, totalDoc: total.totalCount };
 };
 
 const getSingleProductService = async (id: string) => {
@@ -75,6 +73,6 @@ const productService = {
   getSingleProductService,
   updateProductService,
   deleteProductByIdService,
-  getFeaturedProductService
+  getFeaturedProductService,
 };
 export default productService;

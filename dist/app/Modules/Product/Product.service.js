@@ -44,12 +44,9 @@ const getAllProductService = (query) => __awaiter(void 0, void 0, void 0, functi
         .paginate()
         .sort()
         .search(["title"]);
+    const total = yield queryBuild.count();
     const result = yield queryBuild.modelQuery;
-    if (searchTerm) {
-        filter.title = { $regex: searchTerm, $options: "i" };
-    }
-    const totalDoc = yield product_model_1.default.countDocuments(filter);
-    return { result, totalDoc };
+    return { result, totalDoc: total.totalCount };
 });
 const getSingleProductService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.default.findById(id);
@@ -76,6 +73,6 @@ const productService = {
     getSingleProductService,
     updateProductService,
     deleteProductByIdService,
-    getFeaturedProductService
+    getFeaturedProductService,
 };
 exports.default = productService;
