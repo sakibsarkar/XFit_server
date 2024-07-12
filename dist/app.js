@@ -3,13 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.stripe = void 0;
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
+const stripe_1 = __importDefault(require("stripe"));
 const globalError_1 = __importDefault(require("./app/middlewere/globalError"));
 const not_found_1 = require("./app/middlewere/not-found");
 const routes_1 = __importDefault(require("./app/routes"));
 const app = (0, express_1.default)();
+exports.stripe = new stripe_1.default(process.env.STRIPE_SK);
 // Middlewares
 app.use((0, cors_1.default)({
     origin: "*",

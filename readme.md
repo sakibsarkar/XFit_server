@@ -54,6 +54,7 @@ MONGO_PASS= mongodb password
 MONGO_DB= Mongodb collection name
 SALT_ROUND=10
 NODE_ENV="development"
+STRIPE_SK= your stripe secret key
 ```
 
 ### Running the Project
